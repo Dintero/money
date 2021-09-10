@@ -1,0 +1,37 @@
+{
+  "name": "money",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "jest",
+    "clean": "rm -rf dist",
+    "build": "tsc -p tsconfig.build.json",
+    "lint": "eslint ./src"
+  },
+  "author": "",
+  "license": "MIT",
+  "jest": {
+    "preset": "ts-jest",
+    "testEnvironment": "node",
+    "testMatch": [
+      "**/__tests__/**/*.ts"
+    ]
+  },
+  "dependencies": {
+    "big.js": "^6.1.1",
+    "currency-codes": "^2.1.0"
+  },
+  "devDependencies": {
+    "@types/big.js": "^6.1.2",
+    "@types/jest": "^27.0.1",
+    "@typescript-eslint/eslint-plugin": "^4.31.0",
+    "@typescript-eslint/parser": "^4.31.0",
+    "eslint": "^7.32.0",
+    "eslint-config-dintero": "https://github.com/dintero/eslint-config-dintero",
+    "eslint-plugin-import": "^2.24.2",
+    "jest": "^27.1.1",
+    "ts-jest": "^27.0.5",
+    "typescript": "^4.4.2"
+  }
+}
