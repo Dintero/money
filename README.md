@@ -5,7 +5,7 @@ Quick example
 ````ts
 Money
   .of(2090.5, 'NOK')
-  .toCurrency('NOK', 8.61)
+  .toCurrency('SEK', 8.61)
   .toString() // 17999.21
 ````
 
@@ -46,38 +46,38 @@ There are several problems with these when it comes to handling money:
 
 It's easiest to show by example:
 
-````
+````ts
 // Without proper rounding, you'll accumulate small errors:
-0.1 + 0.2 => 0.30000000000000004
+0.1 + 0.2 // => 0.30000000000000004
 
 // With proper rounding, you'll simply get wrong results:
-2090.5 * 8.61 => 17999.204999999998
-(2090.5 * 8.61).toFixed(2) => 17999.20 // should have been 17999.21
+2090.5 * 8.61 // => 17999.204999999998
+;(2090.5 * 8.61).toFixed(2) // => 17999.20 // should have been 17999.21
 
 // Even if the console.log manages to convert to base 10 for you,
 // the number might not be what you think it is inside the double,
 // and toFixed doesn't actually convert to base 10 properly.
 // (see also https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/toFixed)
-8.165.toFixed(2) => 8.16 // should have been 8.17
+8.165.toFixed(2) // => 8.16 // should have been 8.17
 
 // Math.round rounds towards 0, which doesn't make sense with money:
-Math.round(-1.5) => -1 // Should have been -2 for money
+Math.round(-1.5) // => -1 // Should have been -2 for money
 
 // toFixed does it the correct way though:
--1.5.toFixed(0) => -2 // Say what now
+-1.5.toFixed(0) // => -2 // Say what now
 
 // 16 decimal digits are too much for javascript doubles
 // Note how it doesn't really matter whether we're using whole numbers or not
-Number(9999999999999999).toString()  => 10000000000000000 // Too big for most money amounts, so probably fine
-Number(999999999999999.9).toString() => 999999999999999.9
-Number(99999999999999.99).toString() => 99999999999999.98
-Number(9999999999999.999).toString() => 9999999999999.998
-Number(999999999999.9999).toString() => 999999999999.9999
-Number(99999999999.99999).toString() => 99999999999.99998
-Number(9999999999.999999).toString() => 9999999999.999998
-Number(999999999.9999999).toString() => 999999999.9999999
-Number(99999999.99999999).toString() => 99999999.99999999 
-Number(9999999.999999999).toString() => 9999999.999999998 // If this was a price we would be in trouble
+Number(9999999999999999).toString()  // => 10000000000000000 // Too big for most money amounts, so probably fine
+Number(999999999999999.9).toString() // => 999999999999999.9
+Number(99999999999999.99).toString() // => 99999999999999.98
+Number(9999999999999.999).toString() // => 9999999999999.998
+Number(999999999999.9999).toString() // => 999999999999.9999
+Number(99999999999.99999).toString() // => 99999999999.99998
+Number(9999999999.999999).toString() // => 9999999999.999998
+Number(999999999.9999999).toString() // => 999999999.9999999
+Number(99999999.99999999).toString() // => 99999999.99999999 
+Number(9999999.999999999).toString() // => 9999999.999999998 // If this was a price we would be in trouble
 ````
 
 This library uses the excellent big.js library which does arbitrary decimal (base 10) arithmetic.
