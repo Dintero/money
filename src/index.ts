@@ -428,6 +428,35 @@ export class Money {
             i++
         }
 
+        /*
+         * Given that we add the smallest possible unit to parts each time,
+         * is it enough to go through the parts array just once?
+         * Some napkin math:
+         *
+         * Part = round(Amount / N, Decimals)
+         * Rest = Amount - Part * N
+         * SmallestUnit = +/- 1/(10^Decimals)
+         *
+         * The question can then be phrased:
+         * Rest <= N * SmallestUnit
+         *
+         * Let's expand:
+         *
+         * Amount - round(Amount / N, Decimals) * N <= +/- N / (10^Decimals)
+         *
+         * Express worst case error from rounding (even assuming ceil or floor):
+         * round(Amount / N, Decimals) => (Amount / N) +/- 1/(10^Decimals)
+         *
+         * Plug back in:
+         *
+         * Amount - ((Amount / N) +/- 1/(10^Decimals)) * N <= +/- N / (10^Decimals)
+         *
+         * Reduce:
+         * +/- N/(10^Decimals) <= +/- N/(10^Decimals)
+         *
+         * So we see that it will be enough we just one iteration through parts.
+         */
+
         return parts
     }
 
