@@ -5,7 +5,7 @@ Quick example
 ````ts
 Money
   .of(2090.5, 'NOK')
-  .toCurrency('SEK', 8.61)
+  .toCurrency('EUR', 8.61)
   .toString() // 17999.21
 ````
 
