@@ -1,12 +1,43 @@
 # money
 
-Quick example
+Quick examples
 
 ````ts
-Money
-  .of(2090.5, 'NOK')
+Money.of(2090.5, 'NOK')
   .toCurrency('EUR', 8.61)
   .toString() // 17999.21
+
+Money.of(0.1, 'NOK')
+  .add(Money.of(0.2, 'NOK'))
+  .toString() // 0.30
+
+Money.fromPriceAndQuantity(0.0005, 30, 'NOK')
+  .toString() // 0.02
+
+Money.fromPrice(0.001, 'NOK')
+  .multiply(60)
+  .resetDecimals()
+  .toString() // 0.06
+
+Money.of(10, 'NOK')
+  .distributeBy([1, 1, 1]) // list of moneys: [3.34, 3.33, 3.33]
+
+Money.of(5.5, 'NOK')
+  .toLocaleString('no-NB') // 5,50
+
+Money.fromLocaleString('5,50', 'NOK', 'no-NB')
+  .toString() // 5.50
+
+Money.of(12.5, 'NOK')
+  .getVat(25, true) // Amount includes VAT
+  .toString() // 2.50
+
+Money.of(10, 'NOK')
+  .getVat(25, false) // Amount does not include VAT
+  .toString() // 2.50
+
+Money.of('1234567891234567.25', 'NOK')
+  .toNumber() // Throws because the number cannot be represented as a double
 ````
 
 See full api at the bottom of this page.
