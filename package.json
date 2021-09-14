@@ -1,21 +1,31 @@
 {
-  "name": "money",
+  "name": "@dintero/money",
   "version": "1.0.0",
   "description": "",
   "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "test": "jest",
     "clean": "rm -rf dist",
     "build": "tsc -p tsconfig.build.json",
     "lint": "eslint ./src"
   },
-  "author": "",
+  "private": false,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Dintero/money"
+  },
+  "homepage": "https://github.com/Dintero/money",
+  "bugs": {
+    "url": "https://github.com/Dintero/money/issues"
+  },
+  "author": "Magnus Tovslid",
   "license": "MIT",
   "jest": {
     "preset": "ts-jest",
     "testEnvironment": "node",
     "testMatch": [
-      "**/__tests__/**/*.ts"
+      "**/__tests__/**/*.test.ts"
     ]
   },
   "dependencies": {

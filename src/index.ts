@@ -217,7 +217,7 @@ export class Money {
     }
 
     setTag = <Name extends keyof Tags>(tagName: Name, value: any): Money => {
-        return new Money({ ...this._data, tags: { ...this._data.tags, [tagName]: value }})
+        return new Money({ ...this._data, tags: { ...this._data.tags, [tagName]: value } })
     }
 
     assertTag = <Name extends keyof Tags>(tagName: Name, value: any, cmp = (actual: any, value: any) => actual === value): Money => {
