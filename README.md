@@ -389,3 +389,11 @@ export declare class Money {
   getVat: (vatPercentage: Factor, includesVat?: boolean | undefined) => Money;
 }
 ````
+
+### Creating a new release checklist
+
+- Build: `yarn run build`
+- Bump the package version in package.json
+- Add entry to CHANGELOG.md
+- Publish new version to npm with `yarn publish --access public`
+- Tag and create release in Github `git tag 1.0.0` and `git push --tags`
