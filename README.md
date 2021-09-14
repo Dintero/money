@@ -3,8 +3,8 @@
 Quick examples
 
 ````ts
-Money.of(2090.5, 'NOK')
-  .toCurrency('EUR', 8.61)
+Money.of(2090.5, 'EUR')
+  .toCurrency('NOK', 8.61)
   .toString() // 17999.21
 
 Money.of(0.1, 'NOK')

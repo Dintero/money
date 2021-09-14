@@ -8,8 +8,8 @@ describe('money', () => {
 
     it('should handle multiplication where base 2 would round incorrectly', () => {
         const result = Money
-            .of(2090.5, 'NOK')
-            .toCurrency('EUR', 8.61)
+            .of(2090.5, 'EUR')
+            .toCurrency('NOK', 8.61)
             .toString()
 
         expect(result).toBe('17999.21') // Gives 17999.20 in double precision base 2
