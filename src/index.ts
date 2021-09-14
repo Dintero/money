@@ -18,7 +18,7 @@ export type AdditionalOptions = {
 
 export type MoneyInputData = {
     amount: NumberInput
-    currency?: string
+    currency: string
     decimals?: number
     roundingMode?: RoundingMode
     tags?: Partial<Tags>
@@ -32,11 +32,18 @@ type MoneyData = {
     tags: Tags
 }
 
-const DEFAULT_CURRENCY = 'UNKNOWN'
-const DEFAULT_DECIMALS = 2
-const DEFAULT_DECIMALS_PRICE = 6
+const DEFAULT_DECIMALS_PRICE = 10
 
-const currencyToDecimals = (currency: string) => cc.code(currency)?.digits ?? DEFAULT_DECIMALS
+const currencyToDecimals = (currency: string): number => {
+    const decimals = cc.code(currency)?.digits
+    if (decimals === undefined) {
+        if (currency === 'UNKNOWN') {
+            return 2
+        }
+        throw new Error(`Currency ${currency} is not supported`)
+    }
+    return decimals
+}
 
 const percentToMultiplier = (percent: Factor): Big => Big(percent).add(100).div(100)
 const percentToRate = (percent: Factor): Big => Big(percent).div(100)
@@ -51,7 +58,7 @@ export class Money {
             throw new Error('Amount is undefined. Needs to be number, string, or Big')
         }
 
-        const currency = data.currency ?? DEFAULT_CURRENCY
+        const currency = data.currency
         const decimals = data.decimals ?? currencyToDecimals(currency)
         const amount = new Big(data.amount)
 
@@ -72,6 +79,18 @@ export class Money {
         Object.freeze(this._data)
     }
 
+    /**
+     * Create a money object.
+     *
+     * Amount can be any of number, string, or Big
+     * currency is the 3-character currency code (ISO 4217)
+     * currency can also be set to UNKNOWN, which gives a precision of 2 decimals.
+     *
+     * With options you can specify
+     * - decimals
+     * - roundingMode
+     * - tags
+     */
     static of(amount: NumberInput, currency: string, options?: AdditionalOptions): Money {
         return new Money({ amount, currency, ...options })
     }
@@ -113,7 +132,7 @@ export class Money {
 
     /**
      * A price has arbitrary precision.
-     * This method creates a Money instance with 6 decimals of precision by default.
+     * This method creates a Money instance with 10 decimals of precision by default.
      * Remember to call .resetDecimals() when you want to go back to a proper Money value.
      */
     static fromPrice(price: NumberInput, currency: string, options?: AdditionalOptions): Money {
@@ -122,7 +141,7 @@ export class Money {
 
     /**
      * Calculate total money according to a price and quantity.
-     * Default precision is 6 decimals.
+     * Default precision is 10 decimals.
      */
     static fromPriceAndQuantity(price: NumberInput, quantity: Factor, currency: string, options?: AdditionalOptions): Money {
         return Money.fromPrice(price, currency, options)

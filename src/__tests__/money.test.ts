@@ -47,7 +47,7 @@ describe('money', () => {
             .multiply(60)
             .toString()
 
-        expect(result).toBe('0.060000')
+        expect(result).toBe('0.0600000000')
     })
 
     it('should be able to convert large numbers within double precision', () => {

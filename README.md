@@ -205,7 +205,19 @@ export type AdditionalOptions = {
 
 export declare class Money {
   constructor(data: MoneyInputData);
-  
+
+  /**
+   * Create a money object.
+   *
+   * Amount can be any of number, string, or Big
+   * currency is the 3-character currency code (ISO 4217)
+   * currency can also be set to UNKNOWN, which gives a precision of 2 decimals.
+   *
+   * With options you can specify
+   * - decimals
+   * - roundingMode
+   * - tags
+   */
   static of(amount: NumberInput, currency: string, options?: AdditionalOptions): Money;
   /**
    * Instantiate from a string formatted in a certain locale.
