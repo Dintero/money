@@ -390,10 +390,9 @@ export declare class Money {
 }
 ````
 
-### Creating a new release checklist
+### Creating a new release
 
-- Build: `yarn run build`
-- Bump the package version in package.json
-- Add entry to CHANGELOG.md
-- Publish new version to npm with `yarn publish --access public`
-- Tag and create release in Github `git tag 1.0.0` and `git push --tags`
+1. Enforce all commits to the master branch to be formatted according to the
+   [Angular Commit Message Format](https://github.com/angular/angular/blob/master/CONTRIBUTING.md#-commit-message-format)
+2. When merged to master, it will automatically be released with
+   [semantic-release](https://github.com/semantic-release/semantic-release)
