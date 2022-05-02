@@ -2253,8 +2253,9 @@ escodegen@^2.0.0:
     source-map "~0.6.1"
 
 "eslint-config-dintero@https://github.com/dintero/eslint-config-dintero":
-  version "1.0.0"
-  resolved "https://github.com/dintero/eslint-config-dintero#106cdbacfcb4481b46b22482b58547a46d5df69f"
+  version "1.1.0"
+  uid "37b55458c9f1710f2963b6abcd8a6722c34ea883"
+  resolved "https://github.com/dintero/eslint-config-dintero#37b55458c9f1710f2963b6abcd8a6722c34ea883"
 
 eslint-import-resolver-node@^0.3.6:
   version "0.3.6"
