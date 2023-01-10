@@ -39,7 +39,7 @@
     "@semantic-release/git": "^10.0.1",
     "@types/big.js": "^6.1.2",
     "@types/jest": "^27.0.1",
-    "@typescript-eslint/eslint-plugin": "^4.31.0",
+    "@typescript-eslint/eslint-plugin": "^5.48.1",
     "@typescript-eslint/parser": "^4.31.0",
     "eslint": "^7.32.0",
     "eslint-config-dintero": "https://github.com/dintero/eslint-config-dintero",
