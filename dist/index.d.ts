@@ -1,17 +1,17 @@
 import Big, { RoundingMode } from 'big.js';
-declare type NumberInput = number | string | Big;
-declare type Factor = number | Big;
-declare type Tags = {
+type NumberInput = number | string | Big;
+type Factor = number | Big;
+type Tags = {
     includesVat: boolean;
     isVat: boolean;
     [key: string]: any;
 };
-export declare type AdditionalOptions = {
+export type AdditionalOptions = {
     decimals?: number;
     roundingMode?: RoundingMode;
     tags?: Partial<Tags>;
 };
-export declare type MoneyInputData = {
+export type MoneyInputData = {
     amount: NumberInput;
     currency: string;
     decimals?: number;
@@ -111,7 +111,7 @@ export declare class Money {
      */
     toNumber: () => number;
     toString: () => string;
-    toLocaleString: (locale?: string | undefined) => string;
+    toLocaleString: (locale?: string) => string;
     toJSON: () => number;
     /**
      * Gets the current precision in use.
@@ -132,7 +132,7 @@ export declare class Money {
      * Sometimes (rarely) the rate is given multiplied by a certain unit amount which has to be divided away.
      */
     toCurrency: (currency: string, currencyRate?: Factor, currencyUnit?: Factor) => Money;
-    round: (decimals: number, roundingMode?: RoundingMode | undefined) => Money;
+    round: (decimals: number, roundingMode?: RoundingMode) => Money;
     multiply: (factor: Factor) => Money;
     /**
      * Note that dividing a monetary amount cannot be exact in all cases.
@@ -183,6 +183,6 @@ export declare class Money {
     distributeBy: (inputWeights: Factor[]) => Money[];
     addVat: (vatPercentage: Factor) => Money;
     removeVat: (vatPercentage: Factor) => Money;
-    getVat: (vatPercentage: Factor, includesVat?: boolean | undefined) => Money;
+    getVat: (vatPercentage: Factor, includesVat?: boolean) => Money;
 }
 export {};
