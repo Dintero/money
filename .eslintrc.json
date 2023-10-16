@@ -1,16 +1,20 @@
 {
     "root": true,
     "extends": [
-        "dintero/typescript"
+        "eslint:recommended",
+        "plugin:@typescript-eslint/recommended",
+        "prettier"
     ],
-    "plugins": [
-        "import"
-    ],
+    "plugins": ["@typescript-eslint"],
     "rules": {
-        "semi": ["error", "never"],
-        "@typescript-eslint/no-empty-function": "warn", // temporary lower from error to warn
-        "@typescript-eslint/no-non-null-assertion": "off",
-        "@typescript-eslint/no-unused-vars": "off",
-        "function-paren-newline": "off"
+        "@typescript-eslint/consistent-type-imports": ["error"],
+        "@typescript-eslint/no-explicit-any": "off",
+        "@typescript-eslint/no-unused-vars": [
+            "error",
+            {
+                "argsIgnorePattern": "^_",
+                "varsIgnorePattern": "^_"
+            }
+        ]
     }
 }
