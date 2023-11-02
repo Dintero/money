@@ -513,9 +513,11 @@ export class Money {
 
         let i = 0;
         while (!rest.isZero()) {
-            parts[i] = parts[i].add(smallestUnit);
-            rest = rest.subtract(smallestUnit);
-            i++;
+            if (!weights[i].eq(0)) {
+                parts[i] = parts[i].add(smallestUnit);
+                rest = rest.subtract(smallestUnit);
+            }
+            i = (i + 1) % weights.length;
         }
 
         /*
