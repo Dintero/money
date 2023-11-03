@@ -10,7 +10,7 @@ const DEFAULT_DECIMALS_PRICE = 10;
 const currencyToDecimals = (currency) => {
     const decimals = currency_codes_1.default.code(currency)?.digits;
     if (decimals === undefined) {
-        if (currency === 'UNKNOWN') {
+        if (currency === "UNKNOWN") {
             return 2;
         }
         throw new Error(`Currency ${currency} is not supported`);
@@ -19,12 +19,12 @@ const currencyToDecimals = (currency) => {
 };
 const percentToMultiplier = (percent) => (0, big_js_1.default)(percent).add(100).div(100);
 const percentToRate = (percent) => (0, big_js_1.default)(percent).div(100);
-const escapeRegex = (str) => str.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+const escapeRegex = (str) => str.replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$&");
 class Money {
     _data;
     constructor(data) {
         if (data.amount === undefined) {
-            throw new Error('Amount is undefined. Needs to be number, string, or Big');
+            throw new Error("Amount is undefined. Needs to be number, string, or Big");
         }
         const currency = data.currency;
         const decimals = data.decimals ?? currencyToDecimals(currency);
@@ -38,8 +38,8 @@ class Money {
                 includesVat: false,
                 isPrice: false,
                 isVat: false,
-                ...data.tags
-            }
+                ...data.tags,
+            },
         };
         Object.freeze(this);
         Object.freeze(this._data);
@@ -75,10 +75,10 @@ class Money {
      */
     static fromLocaleString(str, currency, locale, options) {
         const parts = Intl.NumberFormat(locale).formatToParts(11111.11);
-        const decimalSign = parts.find(p => p.type === 'decimal')?.value ?? '.';
+        const decimalSign = parts.find((p) => p.type === "decimal")?.value ?? ".";
         str = str
-            .replace(new RegExp(`[^-\\d${escapeRegex(decimalSign)}]`, 'g'), '')
-            .replace(decimalSign, '.');
+            .replace(new RegExp(`[^-\\d${escapeRegex(decimalSign)}]`, "g"), "")
+            .replace(decimalSign, ".");
         return Money.of(str, currency, options);
     }
     /**
@@ -96,7 +96,10 @@ class Money {
      * Remember to call .resetDecimals() when you want to go back to a proper Money value.
      */
     static fromPrice(price, currency, options) {
-        return Money.of(price, currency, { decimals: DEFAULT_DECIMALS_PRICE, ...options });
+        return Money.of(price, currency, {
+            decimals: DEFAULT_DECIMALS_PRICE,
+            ...options,
+        });
     }
     /**
      * Calculate total money according to a price and quantity.
@@ -117,25 +120,27 @@ class Money {
      */
     static sum(moneys, currency, options) {
         if (moneys.length === 0 && currency === undefined) {
-            throw new Error('Currency must be set when summing an empty list of money\'s');
+            throw new Error("Currency must be set when summing an empty list of money's");
         }
         currency = currency ?? moneys[0].currency();
         if (moneys.length === 0) {
             return Money.of(0, currency, options);
         }
-        return moneys.slice(1).reduce((sum, money) => sum.add(money), moneys[0]);
+        return moneys
+            .slice(1)
+            .reduce((sum, money) => sum.add(money), moneys[0]);
     }
     static max(moneys) {
         if (moneys.length === 0) {
-            throw new Error('Need at least one money for comparison');
+            throw new Error("Need at least one money for comparison");
         }
-        return moneys.reduce((max, money) => money.greaterThan(max) ? money : max, moneys[0]);
+        return moneys.reduce((max, money) => (money.greaterThan(max) ? money : max), moneys[0]);
     }
     static min(moneys) {
         if (moneys.length === 0) {
-            throw new Error('Need at least one money for comparison');
+            throw new Error("Need at least one money for comparison");
         }
-        return moneys.reduce((min, money) => money.lessThan(min) ? money : min, moneys[0]);
+        return moneys.reduce((min, money) => (money.lessThan(min) ? money : min), moneys[0]);
     }
     /**
      * Compare two money objects.
@@ -165,7 +170,10 @@ class Money {
         return this._data.tags?.[tagName] ?? defaultValue;
     };
     setTag = (tagName, value) => {
-        return new Money({ ...this._data, tags: { ...this._data.tags, [tagName]: value } });
+        return new Money({
+            ...this._data,
+            tags: { ...this._data.tags, [tagName]: value },
+        });
     };
     assertTag = (tagName, value, cmp = (actual, value) => actual === value) => {
         const actualValue = this.getTag(tagName, undefined);
@@ -176,7 +184,7 @@ class Money {
     };
     assertSameCurrency = (money) => {
         if (money.currency() !== this.currency()) {
-            throw new Error('Currencies must be the same');
+            throw new Error("Currencies must be the same");
         }
         return this;
     };
@@ -190,8 +198,7 @@ class Money {
      * Converts the money amount into a whole number given in the minor unit of the currency
      */
     toFractionlessAmount = () => {
-        return this
-            .multiply(10 ** currencyToDecimals(this.currency()))
+        return this.multiply(10 ** currencyToDecimals(this.currency()))
             .round(0)
             .toNumber();
     };
@@ -204,7 +211,7 @@ class Money {
         const str = this.toString();
         const num = Number(str);
         if (str !== this.merge({ amount: num }).toString()) {
-            throw new Error('Converting to number was imprecise');
+            throw new Error("Converting to number was imprecise");
         }
         return num;
     };
@@ -215,7 +222,7 @@ class Money {
         const decimals = this.getDecimals();
         return Intl.NumberFormat(locale, {
             minimumFractionDigits: decimals,
-            maximumFractionDigits: decimals
+            maximumFractionDigits: decimals,
         }).format(this.toNumber());
     };
     toJSON = () => {
@@ -281,7 +288,8 @@ class Money {
         return this.merge({ amount: this.amount().abs() });
     };
     equals = (money) => {
-        return this._data.currency === money._data.currency && this.amount().eq(money.amount());
+        return (this._data.currency === money._data.currency &&
+            this.amount().eq(money.amount()));
     };
     greaterThan = (money) => {
         this.assertSameCurrency(money);
@@ -324,7 +332,7 @@ class Money {
      */
     distribute = (nParts) => {
         if (nParts !== Math.round(nParts)) {
-            throw new Error('Number of parts must be a whole number');
+            throw new Error("Number of parts must be a whole number");
         }
         return this.distributeBy(Array(nParts).fill(1));
     };
@@ -340,23 +348,26 @@ class Money {
      * Distributes any rest amount equally across the parts
      */
     distributeBy = (inputWeights) => {
-        const weights = inputWeights.map(w => (0, big_js_1.default)(w));
-        if (weights.some(w => w.lt(0))) {
-            throw new Error('Cannot distribute by negative weights');
+        const weights = inputWeights.map((w) => (0, big_js_1.default)(w));
+        if (weights.some((w) => w.lt(0))) {
+            throw new Error("Cannot distribute by negative weights");
         }
         const totalWeight = weights.reduce((a, b) => a.add(b), new big_js_1.default(0));
         if (totalWeight.lte(0)) {
-            throw new Error('Total weight must be greater than 0');
+            throw new Error("Total weight must be greater than 0");
         }
-        const parts = weights.map(weight => this.multiply(weight.div(totalWeight)));
+        const parts = weights.map((weight) => this.multiply(weight.div(totalWeight)));
         let rest = this.subtract(Money.sum(parts, this.currency()));
-        const smallestUnit = this.merge({ amount: 1 }).divide(10 ** this.getDecimals())
+        const smallestUnit = this.merge({ amount: 1 })
+            .divide(10 ** this.getDecimals())
             .multiply(rest.isPositive() ? 1 : -1);
         let i = 0;
         while (!rest.isZero()) {
-            parts[i] = parts[i].add(smallestUnit);
-            rest = rest.subtract(smallestUnit);
-            i++;
+            if (!weights[i].eq(0)) {
+                parts[i] = parts[i].add(smallestUnit);
+                rest = rest.subtract(smallestUnit);
+            }
+            i = (i + 1) % weights.length;
         }
         /*
          * Given that we add the smallest possible unit to parts each time,
@@ -389,16 +400,18 @@ class Money {
         return parts;
     };
     addVat = (vatPercentage) => {
-        return this.multiply(percentToMultiplier(vatPercentage)).setTag('includesVat', true);
+        return this.multiply(percentToMultiplier(vatPercentage)).setTag("includesVat", true);
     };
     removeVat = (vatPercentage) => {
-        return this.divide(percentToMultiplier(vatPercentage)).setTag('includesVat', false);
+        return this.divide(percentToMultiplier(vatPercentage)).setTag("includesVat", false);
     };
     getVat = (vatPercentage, includesVat) => {
-        const withoutVat = (includesVat ?? this.getTag('includesVat', false))
+        const withoutVat = includesVat ?? this.getTag("includesVat", false)
             ? this.removeVat(vatPercentage)
             : this;
-        return withoutVat.multiply(percentToRate(vatPercentage)).setTag('isVat', true);
+        return withoutVat
+            .multiply(percentToRate(vatPercentage))
+            .setTag("isVat", true);
     };
 }
 exports.Money = Money;

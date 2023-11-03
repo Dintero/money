@@ -115,6 +115,31 @@ describe("money", () => {
         expect(parts[2].toNumber()).toEqual(0);
     });
 
+    it("should distribute rest to non-zero weights", () => {
+        const parts = Money.of(-227.58, "NOK").distributeBy([
+            2500, 1480, 1800, 0, 200, 425, 1935, 200, 200, 200, 200, 1200, 200,
+            1540, 4500, 200, 200, 200, 200, 200, 1240, 330, 2300, 1573, 2200,
+            1300, 840,
+        ]);
+
+        expect(parts[0].toNumber()).toEqual(-20.8);
+        expect(parts[1].toNumber()).toEqual(-12.32);
+        expect(parts[2].toNumber()).toEqual(-14.98);
+        expect(parts[3].toNumber()).toEqual(0.0);
+        expect(parts[4].toNumber()).toEqual(-1.67);
+        expect(parts[5].toNumber()).toEqual(-3.54);
+        expect(
+            parts.reduce((p, c) => c.add(p), Money.of(0, "NOK")).toNumber(),
+        ).toEqual(-227.58);
+    });
+
+    it("should distribute without rounding", () => {
+        const parts = Money.of(3, "NOK").distributeBy([1, 2, 3]);
+        expect(parts[0].toNumber()).toEqual(0.5);
+        expect(parts[1].toNumber()).toEqual(1.0);
+        expect(parts[2].toNumber()).toEqual(1.5);
+    });
+
     it("should distribute by unequal weights", () => {
         const parts = Money.of(11, "NOK").distributeBy([5, 7]);
 

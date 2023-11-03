@@ -1,4 +1,5 @@
-import Big, { RoundingMode } from 'big.js';
+import type { RoundingMode } from "big.js";
+import Big from "big.js";
 type NumberInput = number | string | Big;
 type Factor = number | Big;
 type Tags = {
