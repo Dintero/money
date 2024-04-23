@@ -7,10 +7,11 @@
     "scripts": {
         "test": "jest",
         "clean": "rm -rf dist",
-        "check": "yarn run lint && yarn run test",
-        "build": "yarn run clean && yarn run check && tsc -p tsconfig.build.json",
+        "check": "yarn -s run lint && yarn -s run test",
+        "build": "yarn -s run clean && yarn -s run check && tsc -p tsconfig.build.json",
         "prettier": "prettier --config ./.prettierrc.yml --check --log-level warn --cache .",
-        "lint": "yarn prettier && eslint ./src",
+        "eslint": "eslint -c eslint.config.mjs",
+        "lint": "yarn -s prettier && yarn eslint",
         "semantic-release": "semantic-release",
         "prepublishOnly": "yarn run build"
     },
@@ -37,17 +38,17 @@
         "currency-codes": "^2.1.0"
     },
     "devDependencies": {
+        "@eslint/js": "9.1.1",
         "@semantic-release/git": "10.0.1",
         "@types/big.js": "6.2.2",
         "@types/jest": "29.5.12",
-        "@typescript-eslint/eslint-plugin": "7.4.0",
-        "@typescript-eslint/parser": "7.4.0",
-        "eslint": "8.57.0",
+        "eslint": "9.1.0",
         "eslint-config-prettier": "9.1.0",
         "jest": "29.7.0",
         "prettier": "3.2.5",
         "semantic-release": "23.0.8",
         "ts-jest": "29.1.2",
-        "typescript": "5.4.5"
+        "typescript": "5.4.5",
+        "typescript-eslint": "7.7.0"
     }
 }
