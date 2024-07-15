@@ -568,7 +568,7 @@ export class Money {
 
     getVat = (vatPercentage: Factor, includesVat?: boolean): Money => {
         const withoutVat =
-            includesVat ?? this.getTag("includesVat", false)
+            (includesVat ?? this.getTag("includesVat", false))
                 ? this.removeVat(vatPercentage)
                 : this;
         return withoutVat
