@@ -38,7 +38,7 @@
         "currency-codes": "^2.1.0"
     },
     "devDependencies": {
-        "@eslint/js": "9.6.0",
+        "@eslint/js": "9.7.0",
         "@semantic-release/git": "10.0.1",
         "@types/big.js": "6.2.2",
         "@types/jest": "29.5.12",
