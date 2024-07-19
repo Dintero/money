@@ -4,7 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Money = void 0;
-const big_js_1 = __importDefault(require("big.js"));
+const big_js_1 = require("big.js");
 const currency_codes_1 = __importDefault(require("currency-codes"));
 const DEFAULT_DECIMALS_PRICE = 10;
 const currencyToDecimals = (currency) => {
@@ -17,8 +17,8 @@ const currencyToDecimals = (currency) => {
     }
     return decimals;
 };
-const percentToMultiplier = (percent) => (0, big_js_1.default)(percent).add(100).div(100);
-const percentToRate = (percent) => (0, big_js_1.default)(percent).div(100);
+const percentToMultiplier = (percent) => (0, big_js_1.Big)(percent).add(100).div(100);
+const percentToRate = (percent) => (0, big_js_1.Big)(percent).div(100);
 const escapeRegex = (str) => str.replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$&");
 class Money {
     _data;
@@ -28,7 +28,7 @@ class Money {
         }
         const currency = data.currency;
         const decimals = data.decimals ?? currencyToDecimals(currency);
-        const amount = new big_js_1.default(data.amount);
+        const amount = new big_js_1.Big(data.amount);
         this._data = {
             amount: amount.round(decimals, data.roundingMode),
             currency,
@@ -348,11 +348,11 @@ class Money {
      * Distributes any rest amount equally across the parts
      */
     distributeBy = (inputWeights) => {
-        const weights = inputWeights.map((w) => (0, big_js_1.default)(w));
+        const weights = inputWeights.map((w) => (0, big_js_1.Big)(w));
         if (weights.some((w) => w.lt(0))) {
             throw new Error("Cannot distribute by negative weights");
         }
-        const totalWeight = weights.reduce((a, b) => a.add(b), new big_js_1.default(0));
+        const totalWeight = weights.reduce((a, b) => a.add(b), new big_js_1.Big(0));
         if (totalWeight.lte(0)) {
             throw new Error("Total weight must be greater than 0");
         }
@@ -406,7 +406,7 @@ class Money {
         return this.divide(percentToMultiplier(vatPercentage)).setTag("includesVat", false);
     };
     getVat = (vatPercentage, includesVat) => {
-        const withoutVat = includesVat ?? this.getTag("includesVat", false)
+        const withoutVat = (includesVat ?? this.getTag("includesVat", false))
             ? this.removeVat(vatPercentage)
             : this;
         return withoutVat

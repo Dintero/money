@@ -1,5 +1,5 @@
 import type { RoundingMode } from "big.js";
-import Big from "big.js";
+import { Big } from "big.js";
 import cc from "currency-codes";
 
 type NumberInput = number | string | Big;
