@@ -53,6 +53,6 @@
         "semantic-release": "24.0.0",
         "ts-jest": "29.2.2",
         "typescript": "5.5.3",
-        "typescript-eslint": "7.16.0"
+        "typescript-eslint": "7.16.1"
     }
 }
