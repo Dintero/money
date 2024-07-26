@@ -166,6 +166,7 @@ export declare class Money {
      *
      * Example:
      * Money.of(10, 'NOK').distribute(3) => [3.34, 3.33, 3.33]
+     * Money.of(11, 'NOK').distribute(3) => [3.36, 3.67, 3.67]
      *
      * Distributes any rest amount equally across the parts
      */
