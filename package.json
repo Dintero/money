@@ -38,13 +38,13 @@
         ]
     },
     "dependencies": {
+        "@types/big.js": "6.2.2",
         "big.js": "^6.1.1",
         "currency-codes": "^2.1.0"
     },
     "devDependencies": {
         "@eslint/js": "9.7.0",
         "@semantic-release/git": "10.0.1",
-        "@types/big.js": "6.2.2",
         "@types/jest": "29.5.12",
         "eslint": "9.7.0",
         "eslint-config-prettier": "9.1.0",
