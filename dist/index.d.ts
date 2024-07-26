@@ -1,5 +1,5 @@
 import type { RoundingMode } from "big.js";
-import Big from "big.js";
+import { Big } from "big.js";
 type NumberInput = number | string | Big;
 type Factor = number | Big;
 type Tags = {
@@ -96,7 +96,7 @@ export declare class Money {
      * You can later assert on a tag to make sure you're using the right amount for the right purpose.
      */
     getTags: () => Tags;
-    getTag: <Name extends keyof Tags, Value>(tagName: Name, defaultValue?: Value | undefined) => Value | undefined;
+    getTag: <Name extends keyof Tags, Value>(tagName: Name, defaultValue?: Value) => Value | undefined;
     setTag: <Name extends keyof Tags>(tagName: Name, value: any) => Money;
     assertTag: <Name extends keyof Tags>(tagName: Name, value: any, cmp?: (actual: any, value: any) => boolean) => Money;
     assertSameCurrency: (money: Money) => Money;
