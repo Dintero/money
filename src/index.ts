@@ -8,6 +8,7 @@ type Factor = number | Big;
 type Tags = {
     includesVat: boolean;
     isVat: boolean;
+    // biome-ignore lint/suspicious/noExplicitAny: allow any
     [key: string]: any;
 };
 
@@ -128,11 +129,16 @@ export class Money {
         const decimalSign =
             parts.find((p) => p.type === "decimal")?.value ?? ".";
 
-        str = str
-            .replace(new RegExp(`[^-\\d${escapeRegex(decimalSign)}]`, "g"), "")
-            .replace(decimalSign, ".");
-
-        return Money.of(str, currency, options);
+        return Money.of(
+            str
+                .replace(
+                    new RegExp(`[^-\\d${escapeRegex(decimalSign)}]`, "g"),
+                    "",
+                )
+                .replace(decimalSign, "."),
+            currency,
+            options,
+        );
     }
 
     /**
@@ -201,10 +207,8 @@ export class Money {
             );
         }
 
-        currency = currency ?? moneys[0].currency();
-
         if (moneys.length === 0) {
-            return Money.of(0, currency, options);
+            return Money.of(0, currency ?? moneys[0].currency(), options);
         }
 
         return moneys
@@ -266,6 +270,7 @@ export class Money {
         return this._data.tags?.[tagName] ?? defaultValue;
     };
 
+    // biome-ignore lint/suspicious/noExplicitAny: allow any
     setTag = <Name extends keyof Tags>(tagName: Name, value: any): Money => {
         return new Money({
             ...this._data,
@@ -275,8 +280,9 @@ export class Money {
 
     assertTag = <Name extends keyof Tags>(
         tagName: Name,
+        // biome-ignore lint/suspicious/noExplicitAny: allow any
         value: any,
-        cmp = (actual: any, value: any) => actual === value,
+        cmp = (actual: unknown, value: unknown) => actual === value,
     ): Money => {
         const actualValue = this.getTag(tagName, undefined);
         if (!cmp(actualValue, value)) {

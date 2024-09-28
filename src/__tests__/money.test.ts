@@ -158,7 +158,7 @@ describe("money", () => {
     });
 
     describe("fromLocaleString", () => {
-        [
+        for (const { locale, currency, fromStr, toStr } of [
             {
                 locale: "no-NB",
                 currency: "NOK",
@@ -291,7 +291,7 @@ describe("money", () => {
                 fromStr: "-$11,111 US dollars",
                 toStr: "-11111.00",
             },
-        ].forEach(({ locale, currency, fromStr, toStr }) => {
+        ]) {
             it(`should parse (${locale} ${currency}) ${fromStr}`, () => {
                 const result = Money.fromLocaleString(
                     fromStr,
@@ -300,7 +300,7 @@ describe("money", () => {
                 ).toString();
                 expect(result).toBe(toStr);
             });
-        });
+        }
     });
 
     it("should add vat", () => {
