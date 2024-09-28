@@ -4,18 +4,13 @@
     "description": "",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
-    "files": [
-        "CHANGELOG.md",
-        "dist"
-    ],
+    "files": ["CHANGELOG.md", "dist"],
     "scripts": {
         "test": "jest",
         "clean": "rm -rf dist",
         "check": "yarn -s run lint && yarn -s run test",
         "build": "yarn -s run clean && yarn -s run check && tsc -p tsconfig.build.json",
-        "prettier": "prettier --config ./.prettierrc.yml --check --log-level warn --cache .",
-        "eslint": "eslint -c eslint.config.mjs",
-        "lint": "yarn -s prettier && yarn eslint",
+        "lint": "biome check --config-path ./biome.json",
         "semantic-release": "semantic-release",
         "prepublishOnly": "yarn run build"
     },
@@ -33,9 +28,7 @@
     "jest": {
         "preset": "ts-jest",
         "testEnvironment": "node",
-        "testMatch": [
-            "**/__tests__/**/*.test.ts"
-        ]
+        "testMatch": ["**/__tests__/**/*.test.ts"]
     },
     "dependencies": {
         "@types/big.js": "6.2.2",
@@ -43,16 +36,12 @@
         "currency-codes": "^2.1.0"
     },
     "devDependencies": {
-        "@eslint/js": "9.11.0",
+        "@biomejs/biome": "1.9.2",
         "@semantic-release/git": "10.0.1",
         "@types/jest": "29.5.13",
-        "eslint": "9.11.1",
-        "eslint-config-prettier": "9.1.0",
         "jest": "29.7.0",
-        "prettier": "3.3.3",
-        "semantic-release": "24.1.1",
+        "semantic-release": "24.1.2",
         "ts-jest": "29.2.5",
-        "typescript": "5.6.2",
-        "typescript-eslint": "8.7.0"
+        "typescript": "5.6.2"
     }
 }

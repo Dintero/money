@@ -1,0 +1,50 @@
+{
+    "organizeImports": {
+        "enabled": false
+    },
+    "files": {
+        "include": ["**/*.ts", "**/*.txt", "**/*.md", "**/*.json", "**/*.xml"],
+        "ignore": [
+            "**/*.d.ts",
+            "**/.build",
+            "**/.reports",
+            "**/.vscode/**",
+            "**/dist",
+            "**/node_modules"
+        ]
+    },
+    "linter": {
+        "enabled": true,
+        "rules": {
+            "recommended": true
+        }
+    },
+    "vcs": {
+        "enabled": true,
+        "clientKind": "git",
+        "useIgnoreFile": true
+    },
+    "formatter": {
+        "enabled": true,
+        "indentStyle": "space",
+        "lineWidth": 80,
+        "indentWidth": 4,
+        "formatWithErrors": false,
+        "ignore": []
+    },
+    "javascript": {
+        "formatter": {
+            "semicolons": "always",
+            "trailingCommas": "all",
+            "arrowParentheses": "always",
+            "bracketSameLine": false,
+            "bracketSpacing": true
+        }
+    },
+    "json": {
+        "formatter": {
+            "indentWidth": 4,
+            "trailingCommas": "none"
+        }
+    }
+}
