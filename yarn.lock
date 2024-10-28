@@ -1793,9 +1793,9 @@ cssesc@^3.0.0:
   integrity sha512-/Tb/JcjK111nNScGob5MNtsntNM1aCNUDipB/TkwZFhyDrrE47SOx/18wF2bbjgc3ZzCSKW1T5nt5EbFoAz/Vg==
 
 currency-codes@^2.1.0:
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/currency-codes/-/currency-codes-2.1.0.tgz#6d84a1b7fec70ecb9ef64e57bf60f4271899044c"
-  integrity sha512-aASwFNP8VjZ0y0PWlSW7c9N/isYTLxK6OCbm7aVuQMk7dWO2zgup9KGiFQgeL9OGL5P/ulvCHcjQizmuEeZXtw==
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/currency-codes/-/currency-codes-2.2.0.tgz#447624b22fd31c9d2b5c498e77246b5d53501c7e"
+  integrity sha512-vpbQc5sEYHGdTVAYUhHnKv0DWiYLRvzl/KKyqeHzBh7HD/j3UlWoScpZ9tN/jG6w2feddWoObsBbaNVu5yDapg==
   dependencies:
     first-match "~0.0.1"
     nub "~0.0.0"
