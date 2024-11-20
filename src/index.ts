@@ -18,6 +18,10 @@ export type AdditionalOptions = {
     tags?: Partial<Tags>;
 };
 
+export type FractionLessAdditionalOptions = AdditionalOptions & {
+    exponent?: number;
+};
+
 export type MoneyInputData = {
     amount: NumberInput;
     currency: string;
@@ -36,7 +40,22 @@ type MoneyData = {
 
 const DEFAULT_DECIMALS_PRICE = 10;
 
-const currencyToDecimals = (currency: string): number => {
+const isOptionsWithExponent = (
+    options: AdditionalOptions | FractionLessAdditionalOptions | undefined,
+): options is Required<Pick<FractionLessAdditionalOptions, "exponent">> => {
+    return (
+        options !== undefined &&
+        (options as FractionLessAdditionalOptions).exponent !== undefined
+    );
+};
+
+const currencyToDecimals = (
+    currency: string,
+    options?: AdditionalOptions | FractionLessAdditionalOptions,
+): number => {
+    if (isOptionsWithExponent(options)) {
+        return options.exponent;
+    }
     const decimals = cc.code(currency)?.digits;
     if (decimals === undefined) {
         if (currency === "UNKNOWN") {
@@ -150,10 +169,10 @@ export class Money {
     static fromFractionlessAmount(
         amount: number,
         currency: string,
-        options?: AdditionalOptions,
+        options?: FractionLessAdditionalOptions,
     ): Money {
         return Money.of(amount, currency, options).divide(
-            10 ** currencyToDecimals(currency),
+            10 ** currencyToDecimals(currency, options),
         );
     }
 

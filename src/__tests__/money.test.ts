@@ -48,6 +48,26 @@ describe("money", () => {
         expect(result).toBe("0.0600000000");
     });
 
+    it("should keep higher precicion fromPrice", () => {
+        const result = Money.fromPrice(2.164727, "NOK", { decimals: 6 });
+        expect(result.toString()).toBe("2.164727");
+    });
+
+    it("should keep higher precicion from fractionless when explicitly set", () => {
+        const result = Money.fromFractionlessAmount(2164727, "NOK", {
+            exponent: 6,
+            decimals: 6,
+        });
+        expect(result.toString()).toBe("2.164727");
+    });
+
+    it("should import with higher precision from fractionless, but round when decimals not set", () => {
+        const result = Money.fromFractionlessAmount(2165727, "NOK", {
+            exponent: 6,
+        });
+        expect(result.toString()).toBe("2.17");
+    });
+
     it("should be able to convert large numbers within double precision", () => {
         Money.of("1234567891234.25", "NOK").toNumber();
     });
