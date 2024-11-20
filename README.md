@@ -188,6 +188,10 @@ export type AdditionalOptions = {
     tags?: Partial<Tags>; // Tag your money to keep track of what it represents
 };
 
+export type FractionLessAdditionalOptions = AdditionalOptions & {
+    exponent?: number;
+};
+
 export declare class Money {
     constructor(data: MoneyInputData);
 
@@ -233,11 +237,14 @@ export declare class Money {
      *
      * Example:
      * Money.fromFractionlessAmount(1000, 'NOK') => 10.00 NOK
+     * Money.fromFractionlessAmount(1000, "NOK", { exponent: 3}) => 1.00 NOK
+     * Money.fromFractionlessAmount(1000, "NOK", { exponent: 3, decimals: 3}) => 1.000 NOK
+     * 
      */
     static fromFractionlessAmount(
         amount: number,
         currency: string,
-        options?: AdditionalOptions,
+        options?: FractionLessAdditionalOptions,
     ): Money;
     /**
      * A price has arbitrary precision.
