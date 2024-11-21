@@ -146,6 +146,7 @@ export class Money {
      *
      * Example:
      * Money.fromFractionlessAmount(1000, 'NOK') => 10.00 NOK
+     * Money.fromFractionlessAmount(1000, 'NOK', { decimals: 2 }) => 10.00 NOK
      * Money.fromFractionlessAmount(1000, 'NOK', { decimals: 3 }) => 1.000 NOK
      */
     static fromFractionlessAmount(
