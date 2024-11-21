@@ -146,15 +146,16 @@ export class Money {
      *
      * Example:
      * Money.fromFractionlessAmount(1000, 'NOK') => 10.00 NOK
+     * Money.fromFractionlessAmount(1000, 'NOK', { decimals: 2 }) => 10.00 NOK
+     * Money.fromFractionlessAmount(1000, 'NOK', { decimals: 3 }) => 1.000 NOK
      */
     static fromFractionlessAmount(
         amount: number,
         currency: string,
         options?: AdditionalOptions,
     ): Money {
-        return Money.of(amount, currency, options).divide(
-            10 ** currencyToDecimals(currency),
-        );
+        const decimals = options?.decimals ?? currencyToDecimals(currency);
+        return Money.of(amount, currency, options).divide(10 ** decimals);
     }
 
     /**
@@ -309,10 +310,13 @@ export class Money {
     };
 
     /**
-     * Converts the money amount into a whole number given in the minor unit of the currency
+     * Converts the money amount into a whole number given in the minor unit of the currency.
+     * Honors the current precision in use.
      */
     toFractionlessAmount = (): number => {
-        return this.multiply(10 ** currencyToDecimals(this.currency()))
+        const decimals =
+            this.getDecimals() ?? currencyToDecimals(this.currency());
+        return this.multiply(10 ** decimals)
             .round(0)
             .toNumber();
     };
