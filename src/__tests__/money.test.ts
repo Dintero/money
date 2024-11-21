@@ -152,6 +152,32 @@ describe("money", () => {
         expect(result).toBe("10.00");
     });
 
+    it("should instantiate from fractionless amount and honor decimals in options", () => {
+        const result = Money.fromFractionlessAmount(1000, "NOK", {
+            decimals: 3,
+        }).toString();
+        expect(result).toBe("1.000");
+    });
+
+    it("should convert to fractionless amount", () => {
+        const result = Money.of(10, "NOK").toFractionlessAmount();
+        expect(result).toBe(1000);
+    });
+
+    it("should convert from fractionless amount to fractionless amount and honor decimals in options", () => {
+        const result = Money.fromFractionlessAmount(1000, "NOK", {
+            decimals: 3,
+        }).toFractionlessAmount();
+        expect(result).toBe(1000);
+    });
+
+    it("should convert from normal to fractionless amount and honor decimals in options", () => {
+        const result = Money.of(10, "NOK", {
+            decimals: 4,
+        }).toFractionlessAmount();
+        expect(result).toBe(100000);
+    });
+
     it("should print in locale", () => {
         const result = Money.of(5.5, "NOK").toLocaleString("no-NB");
         expect(result).toBe("5,50");
