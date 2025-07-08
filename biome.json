@@ -1,16 +1,14 @@
 {
-    "organizeImports": {
-        "enabled": false
-    },
+    "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
     "files": {
-        "include": ["**/*.ts", "**/*.txt", "**/*.md", "**/*.json", "**/*.xml"],
-        "ignore": [
-            "**/*.d.ts",
-            "**/.build",
-            "**/.reports",
-            "**/.vscode/**",
-            "**/dist",
-            "**/node_modules"
+        "includes": [
+            "**",
+            "!**/*.d.ts",
+            "!**/.build",
+            "!**/.reports",
+            "!**/.vscode/**",
+            "!**/dist",
+            "!**/node_modules"
         ]
     },
     "linter": {
@@ -19,18 +17,17 @@
             "recommended": true
         }
     },
-    "vcs": {
-        "enabled": true,
-        "clientKind": "git",
-        "useIgnoreFile": true
-    },
     "formatter": {
         "enabled": true,
         "indentStyle": "space",
         "lineWidth": 80,
         "indentWidth": 4,
-        "formatWithErrors": false,
-        "ignore": []
+        "formatWithErrors": false
+    },
+    "vcs": {
+        "enabled": true,
+        "clientKind": "git",
+        "useIgnoreFile": true
     },
     "javascript": {
         "formatter": {
