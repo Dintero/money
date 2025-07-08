@@ -4,13 +4,16 @@
     "description": "",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
-    "files": ["CHANGELOG.md", "dist"],
+    "files": [
+        "CHANGELOG.md",
+        "dist"
+    ],
     "scripts": {
         "test": "jest",
         "clean": "rm -rf dist",
         "check": "yarn -s run lint && yarn -s run test",
         "build": "yarn -s run clean && yarn -s run check && tsc -p tsconfig.build.json",
-        "lint": "biome check --config-path ./biome.json",
+        "lint": "biome check",
         "semantic-release": "semantic-release",
         "prepublishOnly": "yarn -s run lint --write && yarn -s run build"
     },
@@ -28,7 +31,9 @@
     "jest": {
         "preset": "ts-jest",
         "testEnvironment": "node",
-        "testMatch": ["**/__tests__/**/*.test.ts"]
+        "testMatch": [
+            "<rootDir>/src/__tests__/**/*.test.ts"
+        ]
     },
     "dependencies": {
         "@types/big.js": "6.2.2",
@@ -36,7 +41,7 @@
         "currency-codes": "^2.1.0"
     },
     "devDependencies": {
-        "@biomejs/biome": "1.9.4",
+        "@biomejs/biome": "2.1.1",
         "@semantic-release/git": "10.0.1",
         "@types/jest": "30.0.0",
         "jest": "30.0.4",

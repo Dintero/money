@@ -4,6 +4,7 @@
         "declaration": true,
         "esModuleInterop": true,
         "forceConsistentCasingInFileNames": true,
+        "isolatedModules": true,
         "lib": ["es2022"],
         "module": "Node16",
         "noImplicitAny": true,

@@ -351,15 +351,15 @@ describe("money", () => {
 
     it("should test complex performance", () => {
         const N = 1000;
-        const start = new Date().getTime();
+        const start = Date.now();
         for (let i = 0; i < N; i++) {
             Money.of(Math.random(), "NOK")
                 .add(Money.of(Math.random(), "NOK"))
                 .toNumber();
         }
-        const end = new Date().getTime();
+        const end = Date.now();
 
-        console.log("Complex performance", (end - start) / N, "ms");
+        expect((end - start) / N).toBeLessThanOrEqual(0.1);
     });
 
     it("should test addition performance", () => {
@@ -367,14 +367,14 @@ describe("money", () => {
         const a = Money.of(Math.random(), "NOK");
         const b = Money.of(Math.random(), "NOK");
 
-        const start = new Date().getTime();
+        const start = Date.now();
 
         for (let i = 0; i < N; i++) {
             a.add(b);
         }
 
-        const end = new Date().getTime();
+        const end = Date.now();
 
-        console.log("Addition performance", (end - start) / N, "ms");
+        expect((end - start) / N).toBeLessThanOrEqual(0.01);
     });
 });
