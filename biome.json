@@ -6,7 +6,7 @@
             "!**/*.d.ts",
             "!**/.build",
             "!**/.reports",
-            "!**/.vscode/**",
+            "!**/.vscode",
             "!**/dist",
             "!**/node_modules"
         ]
