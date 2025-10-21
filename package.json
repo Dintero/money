@@ -34,7 +34,7 @@
         "currency-codes": "^2.1.0"
     },
     "devDependencies": {
-        "@biomejs/biome": "2.2.5",
+        "@biomejs/biome": "2.2.6",
         "@semantic-release/git": "10.0.1",
         "@types/node": "24.8.1",
         "semantic-release": "24.2.9",
