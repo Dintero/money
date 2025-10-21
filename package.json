@@ -9,7 +9,7 @@
         "dist"
     ],
     "scripts": {
-        "test": "jest",
+        "test": "node --require ts-node/register --test",
         "clean": "rm -rf dist",
         "check": "yarn -s run lint && yarn -s run test",
         "build": "yarn -s run clean && yarn -s run check && tsc -p tsconfig.build.json",
@@ -28,13 +28,6 @@
     },
     "author": "Magnus Tovslid",
     "license": "MIT",
-    "jest": {
-        "preset": "ts-jest",
-        "testEnvironment": "node",
-        "testMatch": [
-            "<rootDir>/src/__tests__/**/*.test.ts"
-        ]
-    },
     "dependencies": {
         "@types/big.js": "6.2.2",
         "big.js": "^7.0.1",
@@ -43,10 +36,9 @@
     "devDependencies": {
         "@biomejs/biome": "2.2.5",
         "@semantic-release/git": "10.0.1",
-        "@types/jest": "30.0.0",
-        "jest": "30.2.0",
+        "@types/node": "24.8.1",
         "semantic-release": "24.2.9",
-        "ts-jest": "29.4.5",
+        "ts-node": "10.9.2",
         "typescript": "5.9.3"
     }
 }
