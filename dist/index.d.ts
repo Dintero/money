@@ -55,6 +55,8 @@ export declare class Money {
      *
      * Example:
      * Money.fromFractionlessAmount(1000, 'NOK') => 10.00 NOK
+     * Money.fromFractionlessAmount(1000, 'NOK', { decimals: 2 }) => 10.00 NOK
+     * Money.fromFractionlessAmount(1000, 'NOK', { decimals: 3 }) => 1.000 NOK
      */
     static fromFractionlessAmount(amount: number, currency: string, options?: AdditionalOptions): Money;
     /**
@@ -98,12 +100,13 @@ export declare class Money {
     getTags: () => Tags;
     getTag: <Name extends keyof Tags, Value>(tagName: Name, defaultValue?: Value) => Value | undefined;
     setTag: <Name extends keyof Tags>(tagName: Name, value: any) => Money;
-    assertTag: <Name extends keyof Tags>(tagName: Name, value: any, cmp?: (actual: any, value: any) => boolean) => Money;
+    assertTag: <Name extends keyof Tags>(tagName: Name, value: any, cmp?: (actual: unknown, value: unknown) => boolean) => Money;
     assertSameCurrency: (money: Money) => Money;
     amount: () => Big;
     currency: () => string;
     /**
-     * Converts the money amount into a whole number given in the minor unit of the currency
+     * Converts the money amount into a whole number given in the minor unit of the currency.
+     * Honors the current precision in use.
      */
     toFractionlessAmount: () => number;
     /**
