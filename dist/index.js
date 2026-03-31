@@ -76,19 +76,21 @@ class Money {
     static fromLocaleString(str, currency, locale, options) {
         const parts = Intl.NumberFormat(locale).formatToParts(11111.11);
         const decimalSign = parts.find((p) => p.type === "decimal")?.value ?? ".";
-        str = str
+        return Money.of(str
             .replace(new RegExp(`[^-\\d${escapeRegex(decimalSign)}]`, "g"), "")
-            .replace(decimalSign, ".");
-        return Money.of(str, currency, options);
+            .replace(decimalSign, "."), currency, options);
     }
     /**
      * Instantiate from a whole number of minor units of the currency (e.g. whole number of cents)
      *
      * Example:
      * Money.fromFractionlessAmount(1000, 'NOK') => 10.00 NOK
+     * Money.fromFractionlessAmount(1000, 'NOK', { decimals: 2 }) => 10.00 NOK
+     * Money.fromFractionlessAmount(1000, 'NOK', { decimals: 3 }) => 1.000 NOK
      */
     static fromFractionlessAmount(amount, currency, options) {
-        return Money.of(amount, currency, options).divide(10 ** currencyToDecimals(currency));
+        const decimals = options?.decimals ?? currencyToDecimals(currency);
+        return Money.of(amount, currency, options).divide(10 ** decimals);
     }
     /**
      * A price has arbitrary precision.
@@ -122,9 +124,8 @@ class Money {
         if (moneys.length === 0 && currency === undefined) {
             throw new Error("Currency must be set when summing an empty list of money's");
         }
-        currency = currency ?? moneys[0].currency();
         if (moneys.length === 0) {
-            return Money.of(0, currency, options);
+            return Money.of(0, currency ?? moneys[0].currency(), options);
         }
         return moneys
             .slice(1)
@@ -169,13 +170,16 @@ class Money {
     getTag = (tagName, defaultValue) => {
         return this._data.tags?.[tagName] ?? defaultValue;
     };
+    // biome-ignore lint/suspicious/noExplicitAny: allow any
     setTag = (tagName, value) => {
         return new Money({
             ...this._data,
             tags: { ...this._data.tags, [tagName]: value },
         });
     };
-    assertTag = (tagName, value, cmp = (actual, value) => actual === value) => {
+    assertTag = (tagName, 
+    // biome-ignore lint/suspicious/noExplicitAny: allow any
+    value, cmp = (actual, value) => actual === value) => {
         const actualValue = this.getTag(tagName, undefined);
         if (!cmp(actualValue, value)) {
             throw new Error(`Tag assertion failed. ${tagName} should be ${value} but was ${actualValue}`);
@@ -195,10 +199,12 @@ class Money {
         return this._data.currency;
     };
     /**
-     * Converts the money amount into a whole number given in the minor unit of the currency
+     * Converts the money amount into a whole number given in the minor unit of the currency.
+     * Honors the current precision in use.
      */
     toFractionlessAmount = () => {
-        return this.multiply(10 ** currencyToDecimals(this.currency()))
+        const decimals = this.getDecimals() ?? currencyToDecimals(this.currency());
+        return this.multiply(10 ** decimals)
             .round(0)
             .toNumber();
     };
