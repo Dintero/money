@@ -8,6 +8,11 @@ updates:
       prefix: fix
       prefix-development: chore
       include: scope
+    cooldown:
+      default-days: 7
+      semver-major-days: 30
+      semver-minor-days: 7
+      semver-patch-days: 7
     groups:
       semantic-release:
         patterns:
