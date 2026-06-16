@@ -546,11 +546,15 @@ export class Money {
                     skipsInARow = 0;
                 } else {
                     skipsInARow++;
-                    // Defensive bound: capacity analysis says this is
-                    // unreachable, but don't risk an infinite loop on a
-                    // pathological input.
+                    // By the rounding-bound argument this is unreachable:
+                    // |rest| <= N * smallestUnit and same-sign parts can
+                    // always absorb |rest| without crossing zero. If it
+                    // ever does happen, fail fast rather than silently
+                    // return a distribution that breaks sum(parts) === this.
                     if (skipsInARow >= weights.length) {
-                        break;
+                        throw new Error(
+                            "distributeBy: unable to distribute remainder without flipping a part's sign",
+                        );
                     }
                 }
             }
