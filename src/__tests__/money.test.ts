@@ -153,6 +153,46 @@ describe("money", () => {
         assert.equal(parts[1].toNumber(), 6.42);
     });
 
+    test("should not produce parts with sign opposite to the total when half-up rounding overshoots", () => {
+        // Regression: with a small total and uneven weights, the rounded
+        // parts can overshoot the total (sum 2.70 vs 2.69) and the rest
+        // distribution would naively turn a 0.00-rounded part into -0.01,
+        // breaking sign(parts[i]) == sign(total) and producing a Money the
+        // caller cannot use as a weight in a subsequent distributeBy.
+        const parts = Money.fromFractionlessAmount(269, "NOK").distributeBy([
+            100, 100, 57900, 9400, 74900, 9400,
+        ]);
+        assert.equal(
+            parts.reduce((p, c) => c.add(p), Money.of(0, "NOK")).toNumber(),
+            2.69,
+        );
+        for (const p of parts) {
+            assert.ok(
+                !p.isNegative(),
+                `expected non-negative part, got ${p.toString()}`,
+            );
+        }
+    });
+
+    test("should not produce positive parts when distributing a negative total", () => {
+        // Symmetric case: when the total is negative and rounding overshoots
+        // toward zero, the rest correction must not push a 0.00-rounded part
+        // to +0.01.
+        const parts = Money.fromFractionlessAmount(-269, "NOK").distributeBy([
+            100, 100, 57900, 9400, 74900, 9400,
+        ]);
+        assert.equal(
+            parts.reduce((p, c) => c.add(p), Money.of(0, "NOK")).toNumber(),
+            -2.69,
+        );
+        for (const p of parts) {
+            assert.ok(
+                !p.isPositive(),
+                `expected non-positive part, got ${p.toString()}`,
+            );
+        }
+    });
+
     test("should instantiate from fractionless amount", () => {
         const result = Money.fromFractionlessAmount(1000, "NOK").toString();
         assert.equal(result, "10.00");
