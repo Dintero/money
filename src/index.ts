@@ -522,11 +522,41 @@ export class Money {
             .divide(10 ** this.getDecimals())
             .multiply(rest.isPositive() ? 1 : -1);
 
+        // The half-up rounding above can push the sum of parts past `this`,
+        // so the loop must subtract (or add when this is negative) smallest
+        // units to make up the difference. We must never push a part to a
+        // sign opposite of the total: a part with a tiny exact share rounds
+        // to 0, and naively adding the rest-correction would flip its sign.
+        // Skip such positions; capacity for |rest| always exists in the
+        // parts that already share the total's sign.
+        const totalIsPositive = this.isPositive();
+        const totalIsNegative = this.isNegative();
+
         let i = 0;
+        let skipsInARow = 0;
         while (!rest.isZero()) {
             if (!weights[i].eq(0)) {
-                parts[i] = parts[i].add(smallestUnit);
-                rest = rest.subtract(smallestUnit);
+                const candidate = parts[i].add(smallestUnit);
+                const flipsSign =
+                    (totalIsPositive && candidate.isNegative()) ||
+                    (totalIsNegative && candidate.isPositive());
+                if (!flipsSign) {
+                    parts[i] = candidate;
+                    rest = rest.subtract(smallestUnit);
+                    skipsInARow = 0;
+                } else {
+                    skipsInARow++;
+                    // By the rounding-bound argument this is unreachable:
+                    // |rest| <= N * smallestUnit and same-sign parts can
+                    // always absorb |rest| without crossing zero. If it
+                    // ever does happen, fail fast rather than silently
+                    // return a distribution that breaks sum(parts) === this.
+                    if (skipsInARow >= weights.length) {
+                        throw new Error(
+                            "distributeBy: unable to distribute remainder without flipping a part's sign",
+                        );
+                    }
+                }
             }
             i = (i + 1) % weights.length;
         }
