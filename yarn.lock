@@ -619,10 +619,10 @@
     "@tufjs/canonical-json" "2.0.0"
     minimatch "^10.1.1"
 
-"@types/big.js@6.2.2":
-  version "6.2.2"
-  resolved "https://registry.yarnpkg.com/@types/big.js/-/big.js-6.2.2.tgz#69422ec9ef59df1330ccfde2106d9e1159a083c3"
-  integrity sha512-e2cOW9YlVzFY2iScnGBBkplKsrn2CsObHQ2Hiw4V1sSyiGbgWL8IyqE3zFi1Pt5o1pdAtYkDAIsF3KKUPjdzaA==
+"@types/big.js@7.0.0":
+  version "7.0.0"
+  resolved "https://registry.yarnpkg.com/@types/big.js/-/big.js-7.0.0.tgz#addb5b9ebf8ac2edad930e1e93c6a5bf9499e019"
+  integrity sha512-WfAGp7IbJvyB8EmWK4tJD24rJRAL6uVbw3LV/hJntFNam+os9KWKj0PzXo8rRRpjupYK8U0M8FoBB8dBhWF2dg==
 
 "@types/node@24.13.3":
   version "24.13.3"

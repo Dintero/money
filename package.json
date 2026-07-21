@@ -29,7 +29,7 @@
     "author": "Magnus Tovslid",
     "license": "MIT",
     "dependencies": {
-        "@types/big.js": "6.2.2",
+        "@types/big.js": "7.0.0",
         "big.js": "^7.0.1",
         "currency-codes": "^2.1.0"
     },
