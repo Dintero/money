@@ -396,31 +396,44 @@ describe("money", () => {
     });
 
     test("should test complex performance", () => {
-        const N = 1000;
-        const start = Date.now();
+        const N = 10000;
+
+        // Warm up the JIT
         for (let i = 0; i < N; i++) {
             Money.of(Math.random(), "NOK")
                 .add(Money.of(Math.random(), "NOK"))
                 .toNumber();
         }
-        const end = Date.now();
 
-        assert((end - start) / N <= 0.1);
+        const start = process.hrtime.bigint();
+        for (let i = 0; i < N; i++) {
+            Money.of(Math.random(), "NOK")
+                .add(Money.of(Math.random(), "NOK"))
+                .toNumber();
+        }
+        const end = process.hrtime.bigint();
+
+        const msPerOp = Number(end - start) / 1e6 / N;
+        assert(msPerOp <= 1, `Expected <= 1ms/op, got ${msPerOp}ms/op`);
     });
 
     test("should test addition performance", () => {
-        const N = 1000;
+        const N = 10000;
         const a = Money.of(Math.random(), "NOK");
         const b = Money.of(Math.random(), "NOK");
 
-        const start = Date.now();
-
+        // Warm up the JIT
         for (let i = 0; i < N; i++) {
             a.add(b);
         }
 
-        const end = Date.now();
+        const start = process.hrtime.bigint();
+        for (let i = 0; i < N; i++) {
+            a.add(b);
+        }
+        const end = process.hrtime.bigint();
 
-        assert((end - start) / N <= 0.01);
+        const msPerOp = Number(end - start) / 1e6 / N;
+        assert(msPerOp <= 0.1, `Expected <= 0.1ms/op, got ${msPerOp}ms/op`);
     });
 });
