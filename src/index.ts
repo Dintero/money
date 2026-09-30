@@ -113,7 +113,8 @@ export class Money {
      * en-GB: 11,111.11
      * de-DE: 11.111,11
      *
-     * Locale minus and decimal signs are normalised, and other non-numeric
+     * The locale's minus sign and U+2212 are normalised to ASCII "-".
+     * The locale's decimal sign is normalised, and other non-numeric
      * characters are removed before parsing.
      *
      * Locales with unicode numbers are NOT SUPPORTED
@@ -135,6 +136,7 @@ export class Money {
         return Money.of(
             str
                 .replace(new RegExp(escapeRegex(minusSign), "g"), "-")
+                .replace(/\u2212/g, "-")
                 .replace(
                     new RegExp(`[^-\\d${escapeRegex(decimalSign)}]`, "g"),
                     "",
