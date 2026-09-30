@@ -363,6 +363,102 @@ describe("money", () => {
                 fromStr: "-$11,111 US dollars",
                 toStr: "-11111.00",
             },
+            {
+                locale: "sv-SE",
+                currency: "SEK",
+                fromStr: "\u221212345,67",
+                toStr: "-12345.67",
+            },
+            {
+                locale: "sv-SE",
+                currency: "SEK",
+                fromStr: "\u221212\u00a0345,67 kr",
+                toStr: "-12345.67",
+            },
+            {
+                locale: "sv-SE",
+                currency: "SEK",
+                fromStr: "12\u00a0345,67",
+                toStr: "12345.67",
+            },
+            {
+                locale: "sv-SE",
+                currency: "SEK",
+                fromStr: "-12\u00a0345,67",
+                toStr: "-12345.67",
+            },
+            {
+                locale: "nb-NO",
+                currency: "NOK",
+                fromStr: "\u221212345,67",
+                toStr: "-12345.67",
+            },
+            {
+                locale: "nb-NO",
+                currency: "NOK",
+                fromStr: "NOK \u221212\u00a0345,67",
+                toStr: "-12345.67",
+            },
+            {
+                locale: "nb-NO",
+                currency: "NOK",
+                fromStr: "12\u00a0345,67",
+                toStr: "12345.67",
+            },
+            {
+                locale: "nb-NO",
+                currency: "NOK",
+                fromStr: "-12\u00a0345,67",
+                toStr: "-12345.67",
+            },
+            {
+                locale: "fi-FI",
+                currency: "EUR",
+                fromStr: "\u221212345,67",
+                toStr: "-12345.67",
+            },
+            {
+                locale: "fi-FI",
+                currency: "EUR",
+                fromStr: "\u221212\u00a0345,67 €",
+                toStr: "-12345.67",
+            },
+            {
+                locale: "fi-FI",
+                currency: "EUR",
+                fromStr: "12\u00a0345,67",
+                toStr: "12345.67",
+            },
+            {
+                locale: "fi-FI",
+                currency: "EUR",
+                fromStr: "-12\u00a0345,67",
+                toStr: "-12345.67",
+            },
+            {
+                locale: "en-AU",
+                currency: "AUD",
+                fromStr: "$12,345.67",
+                toStr: "12345.67",
+            },
+            {
+                locale: "en-AU",
+                currency: "AUD",
+                fromStr: "-$12,345.67",
+                toStr: "-12345.67",
+            },
+            {
+                locale: "sv-SE",
+                currency: "SEK",
+                fromStr: "\u22120,01",
+                toStr: "-0.01",
+            },
+            {
+                locale: "sv-SE",
+                currency: "SEK",
+                fromStr: "\u221212345678901234567,89",
+                toStr: "-12345678901234567.89",
+            },
         ]) {
             test(`should parse (${locale} ${currency}) ${fromStr}`, () => {
                 const result = Money.fromLocaleString(
@@ -371,6 +467,75 @@ describe("money", () => {
                     locale,
                 ).toString();
                 assert.equal(result, toStr);
+            });
+        }
+
+        for (const { locale, currency } of [
+            { locale: "sv-SE", currency: "SEK" },
+            { locale: "nb-NO", currency: "NOK" },
+            { locale: "fi-FI", currency: "EUR" },
+            { locale: "en-AU", currency: "AUD" },
+        ]) {
+            for (const amount of ["-12345.67", "12345.67"]) {
+                test(`should round-trip ${amount} (${locale} ${currency})`, () => {
+                    const original = Money.of(amount, currency);
+                    const parsed = Money.fromLocaleString(
+                        original.toLocaleString(locale),
+                        currency,
+                        locale,
+                    );
+                    assert.equal(parsed.toString(), amount);
+                    assert.equal(parsed.currency(), currency);
+                });
+            }
+        }
+
+        test("should preserve options when parsing a locale minus sign", () => {
+            const options = {
+                decimals: 3,
+                roundingMode: 0 as const,
+                tags: { includesVat: true },
+            };
+            const expected = Money.of("-12345.6789", "SEK", options);
+            const parsed = Money.fromLocaleString(
+                "\u221212\u00a0345,6789 kr",
+                "SEK",
+                "sv-SE",
+                options,
+            );
+            const roundTripped = Money.fromLocaleString(
+                parsed.toLocaleString("sv-SE"),
+                "SEK",
+                "sv-SE",
+                options,
+            );
+
+            for (const result of [parsed, roundTripped]) {
+                assert.equal(result.toString(), "-12345.678");
+                assert.equal(result.toString(), expected.toString());
+                assert.equal(result.currency(), "SEK");
+                assert.equal(result.getDecimals(), 3);
+                assert.deepEqual(result.getTags(), expected.getTags());
+                assert.equal(result.round(2).toString(), "-12345.670");
+            }
+        });
+
+        for (const fromStr of [
+            "--12345,67",
+            "\u2212\u221212345,67",
+            "-\u221212345,67",
+            "\u2212-12345,67",
+            "\u221212\u2212345,67",
+            "12345,67\u2212",
+        ]) {
+            test(`should reject invalid minus signs ${JSON.stringify(fromStr)}`, () => {
+                assert.throws(
+                    () => Money.fromLocaleString(fromStr, "SEK", "sv-SE"),
+                    {
+                        name: "Error",
+                        message: "[big.js] Invalid number",
+                    },
+                );
             });
         }
     });
