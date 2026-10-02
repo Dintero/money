@@ -113,7 +113,9 @@ export class Money {
      * en-GB: 11,111.11
      * de-DE: 11.111,11
      *
-     * Before parsing, non-numeric characters are removed, and the decimal sign is normalized.
+     * The locale's minus sign and U+2212 are normalised to ASCII "-".
+     * The locale's decimal sign is normalised, and other non-numeric
+     * characters are removed before parsing.
      *
      * Locales with unicode numbers are NOT SUPPORTED
      * Example of formats NOT SUPPORTED:
@@ -125,12 +127,16 @@ export class Money {
         locale?: string,
         options?: AdditionalOptions,
     ): Money {
-        const parts = Intl.NumberFormat(locale).formatToParts(11111.11);
+        const parts = Intl.NumberFormat(locale).formatToParts(-11111.11);
         const decimalSign =
             parts.find((p) => p.type === "decimal")?.value ?? ".";
+        const minusSign =
+            parts.find((p) => p.type === "minusSign")?.value ?? "-";
 
         return Money.of(
             str
+                .replace(new RegExp(escapeRegex(minusSign), "g"), "-")
+                .replace(/\u2212/g, "-")
                 .replace(
                     new RegExp(`[^-\\d${escapeRegex(decimalSign)}]`, "g"),
                     "",
