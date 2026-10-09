@@ -36,7 +36,7 @@
     "devDependencies": {
         "@biomejs/biome": "2.5.14",
         "@semantic-release/git": "11.0.1",
-        "@types/node": "24.13.6",
+        "@types/node": "24.19.1",
         "semantic-release": "25.0.9",
         "tsx": "4.23.15",
         "typescript": "7.0.2"
