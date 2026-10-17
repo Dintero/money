@@ -34,7 +34,7 @@ jobs:
           scope: '@dintero'
       - name: yarn install, build and test
         run: |
-          yarn install
+          yarn install --ignore-scripts
           yarn run test
       - name: Verify the integrity of provenance attestations and registry signatures for installed dependencies
         run: npm audit signatures
