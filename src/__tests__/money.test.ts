@@ -229,6 +229,13 @@ describe("money", () => {
         assert.equal(result, "5,50");
     });
 
+    test("should print amounts beyond number precision in locale", () => {
+        const result = Money.of("12345678901234567.89", "NOK").toLocaleString(
+            "en-GB",
+        );
+        assert.equal(result, "12,345,678,901,234,567.89");
+    });
+
     describe("fromLocaleString", () => {
         for (const { locale, currency, fromStr, toStr } of [
             {
