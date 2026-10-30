@@ -30,8 +30,8 @@ jobs:
         with:
           node-version: "lts/*"
           cache: yarn
-          registry-url: 'https://registry.npmjs.org/'
-          scope: '@dintero'
+          registry-url: "https://registry.npmjs.org/"
+          scope: "@dintero"
       - name: yarn install, build and test
         run: |
           yarn install --ignore-scripts

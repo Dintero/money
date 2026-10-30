@@ -54,7 +54,6 @@ See full api at the bottom of this page.
 Javascript uses double floating point numbers.
 
 There are several problems with these when it comes to handling money:
-
 -   Base 2 cannot accurately represent all base 10 numbers (e.g. 0.1 + 0.2).
     This makes some calculations inaccurate, no matter the precision we choose.
     It should be mentioned that this does not mean that we cannot convert between the bases in a precise way,
@@ -107,7 +106,6 @@ It is often said that one should use a whole number of the minor unit of the cur
 This is (probably, see below) completely fine for transport and storage, but it is not fine for precision calculations.
 
 Here's why:
-
 -   You still have to divide, and division introduces decimals
 -   You still have to convert currencies, and the rates have decimals.
 -   You still have to deal with prices, and those can have an arbitrary number of decimals.
@@ -134,7 +132,6 @@ so it doesn't matter if we store it as a whole number or a fractional number.
 
 In any case, it's quite likely that javascript numbers are good enough for transport and storage for most use cases,
 even as fractional numbers. However, there are some potential pitfalls:
-
 -   The JSON standard doesn't define a precision for numbers, and it's up to the parser to deal with.
     It seems quite reasonable to assume at least a double precision though.
 -   Most currencies have between 0 and 4 decimals after the decimal point, but crypto currencies can have a lot more.
@@ -144,7 +141,6 @@ even as fractional numbers. However, there are some potential pitfalls:
 You'll have to know how large and precise your numbers will be before you choose how to store and transport them.
 
 This library gives you a couple of options:
-
 -   as fractionless / whole number
 -   as a normal number
 -   as a string
@@ -157,7 +153,6 @@ If you want to be completely safe, use strings.
 ### Legal operations on money
 
 Money is in a currency, and it usually has a major (e.g. Dollars) and minor unit (e.g. Cents).
-
 -   An amount of money cannot be smaller than the minor unit (e.g. half a cent).
 -   Prices can have arbitrary precision, but a price is not Money until it is rounded.
 -   A consequence of the precision rule is that money cannot be evenly divided into chunks (e.g. 10 USD into 3 chunks will be [3.34, 3.33, 3.33])
