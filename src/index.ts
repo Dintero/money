@@ -54,6 +54,13 @@ const percentToRate = (percent: Factor): Big => Big(percent).div(100);
 const escapeRegex = (str: string) =>
     str.replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$&");
 
+// Intl.NumberFormat formats a decimal string exactly since ES2023; older
+// engines convert it to a number first, which would lose precision silently.
+const formatsDecimalStrings =
+    new Intl.NumberFormat("en-US", { useGrouping: false }).format(
+        "9007199254740993" as unknown as number,
+    ) === "9007199254740993";
+
 export class Money {
     private readonly _data: MoneyData;
 
@@ -349,10 +356,16 @@ export class Money {
 
     toLocaleString = (locale?: string): string => {
         const decimals = this.getDecimals();
+        // Format the exact decimal string where the engine supports it, so
+        // amounts a number cannot hold exactly are not rejected by toNumber().
         return Intl.NumberFormat(locale, {
             minimumFractionDigits: decimals,
             maximumFractionDigits: decimals,
-        }).format(this.toNumber());
+        }).format(
+            formatsDecimalStrings
+                ? (this.toString() as unknown as number)
+                : this.toNumber(),
+        );
     };
 
     toJSON = (): number => {
